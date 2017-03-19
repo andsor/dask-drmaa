@@ -1,7 +1,9 @@
 name: dask-drmaa
 channels:
+- conda-forge
 - defaults
 dependencies:
+- parse=1.8.0=py36_0
 - bokeh=0.12.4=py36_0
 - chest=0.2.3=py36_0
 - click=6.7=py36_0
