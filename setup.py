@@ -19,6 +19,5 @@ setup(name='dask-drmaa',
       entry_points='''
       [console_scripts]
       dask-drmaa=dask_drmaa.cli.dask_drmaa:go
-      dask-drmaa-adaptive=dask_drmaa.cli.dask_drmaa_adaptive:go
       ''',
       zip_safe=False)

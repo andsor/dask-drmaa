@@ -1,20 +1,39 @@
+# coding: utf-8
 
 import logging
+import json
 import signal
 import sys
 from time import sleep
 
 import click
+import parse
 
-from dask_drmaa import DRMAACluster
+from dask_drmaa import DRMAACluster, Adaptive
 from distributed.cli.utils import check_python_3
 
 
 @click.command()
-@click.argument('nworkers', type=int)
-def main(nworkers):
-    cluster = DRMAACluster(silence_logs=logging.INFO)
-    cluster.start_workers(nworkers)
+@click.option('--nworkers', '-n', type=int)
+@click.option('--queue', '-q')
+def main(nworkers, queue):
+    template = dict()
+    if queue:
+        template['nativeSpecification'] = '-q {queue}'.format(queue=queue)
+
+    cluster = DRMAACluster(silence_logs=logging.INFO, template=template,
+            scheduler_port=0)
+
+    scheduler_address = cluster.scheduler_address
+    click.echo(json.dumps(parse.parse("{protocol}://{hostip}:{port}",
+        scheduler_address).named))
+    
+    if nworkers:
+        # fixed
+        cluster.start_workers(nworkers)
+    else:
+        # adaptive
+        adapt = Adaptive(cluster)
 
     def handle_signal(sig, frame):
         cluster.close()
