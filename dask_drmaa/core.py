@@ -42,7 +42,7 @@ default_template = {
 
 script_template = ("""
 #!/bin/bash
-%s $1 --name %s.%s "${@:2}"
+%s $1 --nthreads 1 --name %s.%s "${@:2}"
 """ % (worker_bin_path, JOB_ID, TASK_ID)).strip()
 
 
