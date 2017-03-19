@@ -46,6 +46,10 @@ script_template = ("""
 """ % (worker_bin_path, JOB_ID, TASK_ID)).strip()
 
 
+HOSTNAME = socket.gethostname()
+HOSTIP = socket.gethostbyname(HOSTNAME)
+
+
 class DRMAACluster(object):
     def __init__(self, template=None, cleanup_interval=1000, hostname=None,
                  script=None, **kwargs):
@@ -83,7 +87,7 @@ class DRMAACluster(object):
         """
         self.hostname = hostname or socket.gethostname()
         logger.info("Start local scheduler at %s", self.hostname)
-        self.local_cluster = LocalCluster(n_workers=0, ip='', **kwargs)
+        self.local_cluster = LocalCluster(n_workers=0, ip=HOSTIP, **kwargs)
 
         if script is None:
             fn = tempfile.mktemp(suffix='sh',
