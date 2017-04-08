@@ -91,7 +91,7 @@ class Adaptive(object):
                     logger.info("Starting workers due to resource constraints: %s", workers)
 
                 if busy and not s.idle:
-                    workers = self.cluster.start_workers(len(busy))
+                    workers = self.cluster.start_workers(1)
                     logger.info("Starting workers due to over-saturation: %s", workers)
 
                 yield self._retire_workers()
